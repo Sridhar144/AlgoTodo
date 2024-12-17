@@ -32,6 +32,7 @@ This is a Django-based web application designed for managing a simple to-do list
 - GET /api/tasks/: Retrieve all tasks.
 - PUT /api/tasks/{id}/: Update a specific task.
 - DELETE /api/tasks/{id}/: Delete a specific task.
+- **PERFECT INTEGRATION OF GITHUB ACTIONS FOR AUTO REDEPLOYMENT OF APPLICATION ON SETTING UP USING CI/CD PIPELINES**
 
 **Technologies Used**
 
