@@ -65,7 +65,7 @@ jobs:
     # Step 3: Deploy to PythonAnywhere using the API key
     - name: Clone and fix pythonanywhere-cli
       run: |
-        git clone https://github.com/pythonanywhere/pythonanywhere-cli.git
+        git clone https://github.com/cfc603/pythonanywhere-cli.git
         cd pythonanywhere-cli
         # Remove the 'universal' option in setup.cfg
         sed -i '/universal = 1/d' setup.cfg
