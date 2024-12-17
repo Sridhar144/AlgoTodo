@@ -68,6 +68,8 @@ jobs:
         PYTHONANYWHERE_API_KEY: ${{ secrets.Python_Anywhere }}
       run: |
         # Install PythonAnywhere CLI if it's not already available
+        pip install wheel
+
         pip install pythonanywhere-cli
         
         # Run the deployment command for PythonAnywhere
