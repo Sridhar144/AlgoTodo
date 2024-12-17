@@ -63,13 +63,38 @@ jobs:
         pip install -r requirements.txt
         
     # Step 3: Deploy to PythonAnywhere using the API key
-    - name: Deploy to PythonAnywhere
+    - name: Deploy to PythonAnywhere using API
       env:
         PYTHONANYWHERE_API_KEY: ${{ secrets.Python_Anywhere }}
       run: |
-        # Install PythonAnywhere CLI if it's not already available
-        pip install --upgrade setuptools wheel
-        pip install pythonanywhere-cli
-        
-        # Run the deployment command for PythonAnywhere
-        pythonanywhere --api-key ${{ secrets.Python_Anywhere }} deploy /todo
+        # Install requests library to make API calls
+        pip install requests
+
+        # Deploy using PythonAnywhere API
+        python -c "
+import requests
+
+# Define your API key and PythonAnywhere API URL
+api_key = '${{ secrets.Python_Anywhere }}'
+username = 'your_pythonanywhere_username'
+api_url = 'https://www.pythonanywhere.com/api/v0/user/{}/webapps/'.format(username)
+
+# Prepare data for deployment (example)
+data = {
+  'name': 'my-app',
+  'source_dir': '/path/to/your/source',
+  'virtualenv': '/path/to/your/virtualenv',
+  # Add any other necessary parameters based on your app setup
+}
+
+# Send the deployment request to PythonAnywhere
+headers = {
+  'Authorization': 'Token {}'.format(api_key),
+}
+response = requests.post(api_url, headers=headers, data=data)
+
+if response.status_code == 201:
+  print('Deployment Successful')
+else:
+  print('Failed to deploy:', response.text)
+"
