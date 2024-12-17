@@ -1,4 +1,3 @@
-
 # 6. Admin (todo_app/admin.py)
 
 from django.contrib import admin

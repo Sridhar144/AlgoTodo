@@ -2,6 +2,7 @@ from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
 from .models import Task, Tag
 
+
 class TaskAPITestCase(APITestCase):
     def setUp(self):
         # Create a test user and login
@@ -47,7 +48,7 @@ class TaskAPITestCase(APITestCase):
         }
 
         response = self.client.post("/api/tasks/", data)
-        
+
         # Ensure the task and tags are created successfully
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Task.objects.count(), 2)  # Only 1 task should be created
@@ -84,7 +85,6 @@ class TaskAPITestCase(APITestCase):
         response = self.client.get("/api/tasks/")
         self.assertEqual(response.status_code, 403)  # Permission denied
 
-
     def setUp(self):
         """Setup a user and tasks for E2E test flow."""
         self.user = User.objects.create_user(username="testuser", password="password")
@@ -99,7 +99,7 @@ class TaskAPITestCase(APITestCase):
 
     def test_end_to_end_task_flow(self):
         """Test the full CRUD flow from create -> retrieve -> update -> delete"""
-        
+
         # Step 1: Create a task
         create_data = {
             "title": "End to End Task",
@@ -109,7 +109,7 @@ class TaskAPITestCase(APITestCase):
         response = self.client.post("/api/tasks/", create_data)
         self.assertEqual(response.status_code, 201)
         task_id = response.data["id"]
-        
+
         # Step 2: Retrieve the created task
         response = self.client.get(f"/api/tasks/{task_id}/")
         self.assertEqual(response.status_code, 200)
@@ -123,16 +123,16 @@ class TaskAPITestCase(APITestCase):
         }
         response = self.client.put(f"/api/tasks/{task_id}/", update_data)
         self.assertEqual(response.status_code, 200)
-        
+
         # Verify the updated task
         response = self.client.get(f"/api/tasks/{task_id}/")
         self.assertEqual(response.data["title"], "Updated End to End Task")
         self.assertEqual(response.data["status"], "COMPLETED")
-        
+
         # Step 4: Delete the task
         response = self.client.delete(f"/api/tasks/{task_id}/")
         self.assertEqual(response.status_code, 204)
-        
+
         # Verify the task is deleted
         response = self.client.get(f"/api/tasks/{task_id}/")
         self.assertEqual(response.status_code, 404)
