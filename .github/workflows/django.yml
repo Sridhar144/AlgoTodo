@@ -1,0 +1,77 @@
+name: Django CI/CD
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on any push to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests to the main branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # The job runs on the latest Ubuntu image
+
+    steps:
+    # Step 1: Checkout the repository
+    - uses: actions/checkout@v2
+
+    # Step 2: Set up Python environment
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'  # Use Python 3.9 for the environment
+
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # Install all dependencies from requirements.txt
+
+    # Step 4: Run Unit and Integration tests
+    - name: Run Unit and Integration tests
+      run: |
+        python manage.py test  # Run unit and integration tests
+        coverage run manage.py test  # If you are using coverage, this will collect data
+        coverage report  # Display the coverage report
+
+    # Step 5: Run E2E (End-to-End) tests (if any)
+    - name: Run E2E tests
+      run: |
+        python manage.py test e2e  # If you have an E2E test case group, run them here
+        # Example: If you use selenium or other tools for E2E testing
+
+    # Step 6: Run linting tools (Flake8 and Black)
+    - name: Run linting tools
+      run: |
+        pip install flake8 black  # Install linting tools
+        flake8 .  # Run Flake8 for linting the Python code
+        black --check .  # Run Black in check mode (checks if the code follows PEP 8)
+
+  deploy:
+    needs: test  # Deploy only after tests pass
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - uses: actions/checkout@v2
+
+    # Step 2: Set up Python and install dependencies
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    # Step 3: Deploy to PythonAnywhere using the API key
+    - name: Deploy to PythonAnywhere
+      env:
+        PYTHONANYWHERE_API_KEY: ${{ secrets.Python_Anywhere }}
+      run: |
+        # Install PythonAnywhere CLI or use direct API calls
+        pip install pythonanywhere
+        python -m pythonanywhere --api-key ${{ secrets.Python_Anywhere }} deploy /todo
