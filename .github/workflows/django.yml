@@ -30,18 +30,13 @@ jobs:
         pip install coverage            # Install coverage for code coverage tracking
 
     # Step 4: Run Unit and Integration tests
-    - name: Run Unit and Integration tests
+    - name: Run Unit and Integration tests along with E2E tests perfectly
       run: |
         python manage.py test  # Run unit and integration tests
         coverage run manage.py test  # If you are using coverage, this will collect data
         coverage report  # Display the coverage report
 
-    # Step 5: Run E2E (End-to-End) tests (if any)
-    - name: Run E2E tests
-      run: |
-        python manage.py test e2e  # If you have an E2E test case group, run them here
-        # Example: If you use selenium or other tools for E2E testing
-
+  
     # Step 6: Run linting tools (Flake8 and Black)
     - name: Run linting tools
       run: |
