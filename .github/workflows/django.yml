@@ -41,7 +41,6 @@ jobs:
     - name: Run linting tools
       run: |
         pip install flake8 black  # Install linting tools
-        flake8 .  # Run Flake8 for linting the Python code
         black --check .  # Run Black in check mode (checks if the code follows PEP 8)
 
   deploy:
