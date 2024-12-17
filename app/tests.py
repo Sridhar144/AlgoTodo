@@ -136,4 +136,3 @@ class TaskAPITestCase(APITestCase):
         # Verify the task is deleted
         response = self.client.get(f"/api/tasks/{task_id}/")
         self.assertEqual(response.status_code, 404)
-
