@@ -67,6 +67,8 @@ jobs:
       env:
         PYTHONANYWHERE_API_KEY: ${{ secrets.Python_Anywhere }}
       run: |
-        # Install PythonAnywhere CLI or use direct API calls
-        pip install pythonanywhere
-        python -m pythonanywhere --api-key ${{ secrets.Python_Anywhere }} deploy /todo
+        # Install PythonAnywhere CLI if it's not already available
+        pip install pythonanywhere-cli
+        
+        # Run the deployment command for PythonAnywhere
+        pythonanywhere --api-key ${{ secrets.Python_Anywhere }} deploy /todo
