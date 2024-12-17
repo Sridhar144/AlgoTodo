@@ -63,19 +63,10 @@ jobs:
         pip install -r requirements.txt
         
     # Step 3: Deploy to PythonAnywhere using the API key
-    - name: Clone and fix pythonanywhere-cli
-      run: |
-        git clone https://github.com/cfc603/pythonanywhere-cli.git
-        cd pythonanywhere-cli
-        # Remove the 'universal' option in setup.cfg
-        sed -i '/universal = 1/d' setup.cfg
-        # Build the wheel manually
-        python setup.py bdist_wheel
-        # Install the modified wheel
-        pip install dist/pythonanywhere_cli-0.3.0-py3-none-any.whl
-
-    - name: Deploy to PythonAnywhere
-      env:
-        PYTHONANYWHERE_API_KEY: ${{ secrets.Python_Anywhere }}
-      run: |
-        pythonanywhere --api-key ${{ secrets.Python_Anywhere }} deploy /todo
+    - name: Re-Deploy Pythonanywhere Django API
+      uses: umuttopalak/pythonanywhere-deploy-action@v1.1.0
+      with:
+        host: 'www.pythonanywhere.com'
+        username: ${{ secrets.USERNAME }}
+        api_token: ${{ secrets.Python_Anywhere }}
+        domain_name: ${{ secrets.DOMAIN_NAME }}
